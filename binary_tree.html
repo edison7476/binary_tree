@@ -1,0 +1,105 @@
+<script>
+    function Node(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+
+    function Tree() {
+        this.head = null;
+    }
+
+    Tree.prototype.add = function(val) {
+        if (!this.head) {
+            this.head = new Node(val);
+            return this
+        }
+        var pointer = this.head;
+
+        while (pointer) {
+            if (val < pointer.val) {
+                if (!pointer.left) {
+                    pointer.left = new Node(val)
+                    break;
+                } else {
+                    pointer = pointer.left;
+                }
+            } else {
+                if (!pointer.right) {
+                    pointer.right = new Node(val);
+                    break;
+                } else {
+                    pointer = pointer.right;
+                }
+            }
+        }
+    }
+
+    Tree.prototype.traversal = function(node, callback) {
+
+        if (node) {
+          if(typeof(callback) == 'function'){
+              callback()
+            }
+            this.traversal(node.left, callback)
+            console.log('node.val = ', node.val);
+            this.traversal(node.right, callback)
+        }
+    }
+
+    Tree.prototype.findVal = function(val) {
+        var pointer = this.head;
+        var found = false;
+        while(pointer && !found){
+          if (val === pointer.val) {
+              console.log('Found the target: ', val);
+              found = true
+          } else if (val < pointer.val) {
+            console.log('target = ', val, 'pointer.val = ', pointer.val);
+            pointer = pointer.left;
+
+          } else if (val > pointer.val) {
+            console.log('target = ', val, 'pointer.val = ', pointer.val);
+            pointer = pointer.right;
+          }
+        }
+        if(found){
+          console.log('return this value: ', pointer.val);
+        }
+        else{
+          console.log('Not Found!');
+        }
+        return found ? pointer.val : "Val Not Found"
+    }
+    Tree.prototype.treeSize = function (){
+      var length = 0
+      var countLength = function(){
+        length ++
+      }
+      this.traversal(this.head, countLength)
+      console.log('Tree size = ', length);
+      return length;
+    }
+
+
+    // test it
+    var bts = new Tree();
+    bts.add(7);
+    bts.add(17);
+    bts.add(11);
+    bts.add(3);
+    bts.add(15);
+    bts.add(4);
+    bts.add(6);
+    bts.add(1);
+    bts.add(2);
+    bts.add(25);
+    bts.add(19);
+    console.log(bts);
+
+    bts.traversal(bts.head)
+    bts.findVal(1)
+    bts.treeSize()
+    console.log(bts.treeSize());
+
+</script>
